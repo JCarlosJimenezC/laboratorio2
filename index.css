@@ -1,0 +1,253 @@
+/* ── Variables CSS ── */
+:root {
+  --color-bg: #0f1a2e;
+  --color-sign: #1b2a4a;
+  --color-text: #ffffff;
+  --color-accent: #4fc3f7;
+  --color-divider: rgba(255, 255, 255, 0.15);
+  --color-footer-bg: #ffffff;
+  --color-footer-text: #1b2a4a;
+
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 0.75rem;
+  --spacing-md: 1.25rem;
+  --spacing-lg: 2rem;
+
+  --radius: 0.75rem;
+  --font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  --transition-speed: 0.25s;
+}
+
+/* ── Reset & base ── */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f1a2e 0%, #1b3a5c 40%, #ffffff 100%);
+  font-family: var(--font-family);
+  color: var(--color-text);
+}
+
+/* ── Animación de entrada ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(1.5rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Animación giro cuadrado ── */
+@keyframes squareSpin {
+  0%        { transform: translate(0, 0); }
+  12.5%     { transform: translate(30px, 0); }
+  25%       { transform: translate(30px, 0); }
+  37.5%     { transform: translate(30px, 30px); }
+  50%       { transform: translate(30px, 30px); }
+  62.5%     { transform: translate(0, 30px); }
+  75%       { transform: translate(0, 30px); }
+  87.5%     { transform: translate(0, 0); }
+  100%      { transform: translate(0, 0); }
+}
+
+/* ── Desplazamiento cartel 1: izquierda → derecha (limitado) ── */
+@keyframes driftRight {
+  0%   { transform: translateX(-60px); }
+  50%  { transform: translateX(60px); }
+  100% { transform: translateX(-60px); }
+}
+
+/* ── Desplazamiento cartel 2: derecha → izquierda (limitado) ── */
+@keyframes driftLeft {
+  0%   { transform: translateX(60px); }
+  50%  { transform: translateX(-60px); }
+  100% { transform: translateX(60px); }
+}
+
+/* ── Animación título derecha a izquierda ── */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Layout principal ── */
+.page-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-lg);
+}
+
+/* ── Título ── */
+.page-title {
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  text-align: center;
+  animation: slideInLeft 0.8s ease-out both;
+}
+
+/* ── Contenedor de carteles ── */
+.signs-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 6rem;
+}
+
+/* ── Cartel ── */
+.sign {
+  width: min(90%, 28rem);
+  display: grid;
+  grid-template-rows: repeat(5, auto) auto;
+  background-color: var(--color-sign);
+  border-radius: var(--radius);
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+/* Cartel 1: se desplaza izquierda → derecha */
+.signs-container > .sign:first-child {
+  animation: driftRight 4s ease-in-out infinite;
+}
+
+/* Cartel 2: se desplaza derecha → izquierda */
+.signs-container > .sign:last-child {
+  animation: driftLeft 4s ease-in-out infinite;
+}
+
+/* Hover: ambos cambian a giro cuadrado */
+.sign:hover {
+  animation: squareSpin 1.2s ease-in-out infinite;
+}
+
+/* ── Filas ── */
+.sign-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-bottom: 1px solid var(--color-divider);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-speed),
+    transform var(--transition-speed),
+    filter var(--transition-speed);
+}
+
+.sign-row:last-of-type {
+  border-bottom: none;
+}
+
+.sign-row:hover {
+  background-color: rgba(255, 255, 255, 0.07);
+  transform: scale(1.02);
+  filter: brightness(1.15);
+}
+
+.sign-row:active {
+  transform: scale(0.98);
+}
+
+/* ── Texto de fila ── */
+.sign-text {
+  font-size: clamp(0.9rem, 2.2vw, 1.15rem);
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+/* ── Flecha ── */
+.sign-arrow {
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: var(--color-accent);
+  flex-shrink: 0;
+  margin-left: var(--spacing-sm);
+  transition: transform var(--transition-speed);
+}
+
+.sign-row:hover .sign-arrow {
+  transform: translateX(0.35rem);
+}
+
+/* ── Pie del cartel ── */
+.sign-footer {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  background-color: var(--color-footer-bg);
+  min-height: 4.5rem;
+}
+
+.sign-footer::before {
+  content: "";
+  position: absolute;
+  top: -1.5rem;
+  left: 0;
+  width: 100%;
+  height: 1.5rem;
+  background-color: var(--color-footer-bg);
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.sign-footer-text {
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  font-weight: 700;
+  color: var(--color-footer-text);
+  letter-spacing: 0.15em;
+  text-shadow:
+    1px 1px 0 rgba(0, 0, 0, 0.08),
+    -1px -1px 0 rgba(0, 0, 0, 0.08);
+}
+
+/* ── Segundo cartel (imagen) ── */
+.sign-image {
+  position: relative;
+  display: block;
+  min-height: 22rem;
+  background-image: url("img/cartel.jpg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--color-sign);
+  animation-delay: 0.15s;
+}
+
+.sign-image-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: var(--spacing-lg);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 60%);
+}
+
+.sign-image-text {
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.6);
+}
